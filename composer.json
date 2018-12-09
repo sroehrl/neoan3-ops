@@ -1,5 +1,5 @@
 {
-  "name": "neoan3-apps/Ops",
+  "name": "neoan3-apps/ops",
   "description": "neoan3 common string operations helper class",
   "version": "0.0.1",
   "autoload": {
