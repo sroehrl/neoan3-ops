@@ -7,5 +7,10 @@
       "Neoan3\\Apps\\": "./"
     }
 
+  },
+  "require": {
+    "ext-openssl": "*",
+    "ext-mbstring": "*",
+    "ext-json": "*"
   }
 }
