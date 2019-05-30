@@ -195,7 +195,7 @@ class Ops {
      *
      * @return string
      */
-    static function ctoCamelCase($string) {
+    static function toCamelCase($string) {
         $ret = self::caseConverter($string);
         foreach($ret as &$match) {
             $match = $match == strtoupper($match) ? strtolower($match) : ucfirst($match);
