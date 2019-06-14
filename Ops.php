@@ -132,13 +132,35 @@ class Ops {
     }
 
     /**
+     * @param      $array
+     * @param bool $parentKey
+     *
+     * @return array
+     */
+    static function flattenArray($array,$parentKey=false){
+        $answer = [];
+        foreach ($array as $key => $value){
+            if($parentKey){
+                $key = $parentKey .'.'.$key;
+            }
+            if(!is_array($value)){
+                $answer[$key] = $value;
+            } else {
+                $answer = array_merge($answer,self::flattenArray($value,$key));
+            }
+        }
+        return $answer;
+    }
+
+    /**
      * @param $content
      * @param $array
      *
      * @return mixed
      */
     static function embrace($content, $array) {
-        return str_replace(array_map('self::curlyBraces', array_keys($array)), array_values($array), $content);
+        $flatArray = self::flattenArray($array);
+        return str_replace(array_map('self::curlyBraces', array_keys($flatArray)), array_values($flatArray), $content);
     }
 
     /**
@@ -216,6 +238,19 @@ class Ops {
             $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
         }
         return implode('_', $ret);
+    }
+
+    /**
+     * @param $string
+     *
+     * @return string
+     */
+    static function toKebabCase($string){
+        $ret = self::caseConverter($string);
+        foreach($ret as &$match) {
+            $match = $match == strtolower($match) ? strtolower($match) : lcfirst($match);
+        }
+        return implode('-', $ret);
     }
 
     private static function caseConverter($string) {
