@@ -6,16 +6,17 @@ use Exception;
 
 /**
  * Class Ops
- *
  * @package Neoan3\Apps
  */
-class Ops {
+class Ops
+{
     /**
      * @param $any
      *
      * @return string
      */
-    static function serialize($any) {
+    static function serialize($any)
+    {
         return urlencode(base64_encode(json_encode($any)));
     }
 
@@ -24,12 +25,13 @@ class Ops {
      *
      * @return string
      */
-    static function pin($length) {
+    static function pin($length)
+    {
         $chars = "123456789";
-        srand((double) microtime() * 1000000);
+        srand((double)microtime() * 1000000);
         $i = 0;
         $pass = '';
-        while($i < $length) {
+        while ($i < $length) {
             $num = rand(0, strlen($chars) - 1);
             $tmp = substr($chars, $num, 1);
             $pass .= $tmp;
@@ -44,15 +46,16 @@ class Ops {
      *
      * @return string
      */
-    static function hash($length = 10, $special = false) {
+    static function hash($length = 10, $special = false)
+    {
         $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        if($special) {
+        if ($special) {
             $chars .= ")(}{][";
         }
-        srand((double) microtime() * 1000000);
+        srand((double)microtime() * 1000000);
         $i = 0;
         $pass = 'N';
-        while($i < $length) {
+        while ($i < $length) {
             $num = rand(0, strlen($chars) - 1);
             $tmp = substr($chars, $num, 1);
             $pass .= $tmp;
@@ -67,7 +70,8 @@ class Ops {
      *
      * @return string
      */
-    static function encrypt($message, $key) {
+    static function encrypt($message, $key)
+    {
         $nonceSize = openssl_cipher_iv_length('aes-256-ctr');
         $nonce = openssl_random_pseudo_bytes($nonceSize);
 
@@ -85,9 +89,10 @@ class Ops {
      * @return string
      * @throws Exception
      */
-    static function decrypt($message, $key) {
+    static function decrypt($message, $key)
+    {
         $message = base64_decode($message, true);
-        if($message === false) {
+        if ($message === false) {
             throw new Exception('Encryption failure');
         }
 
@@ -107,9 +112,10 @@ class Ops {
      *
      * @return string
      */
-    static function base64url_to_base64($input = "") {
+    static function base64url_to_base64($input = "")
+    {
         $padding = strlen($input) % 4;
-        if($padding > 0) {
+        if ($padding > 0) {
             $input .= str_repeat("=", 4 - $padding);
         }
         return strtr($input, '-_', '+/');
@@ -121,10 +127,11 @@ class Ops {
      *
      * @return array
      */
-    static function extrude($array, $objArray) {
+    static function extrude($array, $objArray)
+    {
         $return = [];
-        foreach($array as $key) {
-            if(isset($objArray[$key])) {
+        foreach ($array as $key) {
+            if (isset($objArray[$key])) {
                 $return[$key] = $objArray[$key];
             }
         }
@@ -137,16 +144,17 @@ class Ops {
      *
      * @return array
      */
-    static function flattenArray($array,$parentKey=false){
+    static function flattenArray($array, $parentKey = false)
+    {
         $answer = [];
-        foreach ($array as $key => $value){
-            if($parentKey){
-                $key = $parentKey .'.'.$key;
+        foreach ($array as $key => $value) {
+            if ($parentKey) {
+                $key = $parentKey . '.' . $key;
             }
-            if(!is_array($value)){
+            if (!is_array($value)) {
                 $answer[$key] = $value;
             } else {
-                $answer = array_merge($answer,self::flattenArray($value,$key));
+                $answer = array_merge($answer, self::flattenArray($value, $key));
             }
         }
         return $answer;
@@ -158,7 +166,8 @@ class Ops {
      *
      * @return mixed
      */
-    static function embrace($content, $array) {
+    static function embrace($content, $array)
+    {
         $flatArray = self::flattenArray($array);
         return str_replace(array_map('self::curlyBraces', array_keys($flatArray)), array_values($flatArray), $content);
     }
@@ -169,7 +178,8 @@ class Ops {
      *
      * @return mixed
      */
-    static function hardEmbrace($content, $array) {
+    static function hardEmbrace($content, $array)
+    {
         return str_replace(array_map('self::hardBraces', array_keys($array)), array_values($array), $content);
     }
 
@@ -179,7 +189,8 @@ class Ops {
      *
      * @return mixed
      */
-    static function tEmbrace($content, $array) {
+    static function tEmbrace($content, $array)
+    {
         return str_replace(array_map('self::tBraces', array_keys($array)), array_values($array), $content);
     }
 
@@ -189,7 +200,8 @@ class Ops {
      *
      * @return mixed
      */
-    static function embraceFromFile($location, $array) {
+    static function embraceFromFile($location, $array)
+    {
         $appRoot = defined('path') ? path : '';
         $file = file_get_contents($appRoot . '/' . $location);
         return self::embrace($file, $array);
@@ -202,9 +214,10 @@ class Ops {
      *
      * @return string
      */
-    static function toPascalCase($string) {
+    static function toPascalCase($string)
+    {
         $ret = self::caseConverter($string);
-        foreach($ret as &$match) {
+        foreach ($ret as &$match) {
             $match = $match == strtoupper($match) ? strtolower($match) : ucfirst($match);
         }
         return implode('', $ret);
@@ -217,9 +230,10 @@ class Ops {
      *
      * @return string
      */
-    static function toCamelCase($string) {
+    static function toCamelCase($string)
+    {
         $ret = self::caseConverter($string);
-        foreach($ret as &$match) {
+        foreach ($ret as &$match) {
             $match = $match == strtoupper($match) ? strtolower($match) : ucfirst($match);
         }
         return lcfirst(implode('', $ret));
@@ -232,9 +246,10 @@ class Ops {
      *
      * @return string
      */
-    static function toSnakeCase($string) {
+    static function toSnakeCase($string)
+    {
         $ret = self::caseConverter($string);
-        foreach($ret as &$match) {
+        foreach ($ret as &$match) {
             $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
         }
         return implode('_', $ret);
@@ -245,15 +260,17 @@ class Ops {
      *
      * @return string
      */
-    static function toKebabCase($string){
+    static function toKebabCase($string)
+    {
         $ret = self::caseConverter($string);
-        foreach($ret as &$match) {
+        foreach ($ret as &$match) {
             $match = $match == strtolower($match) ? strtolower($match) : lcfirst($match);
         }
         return implode('-', $ret);
     }
 
-    private static function caseConverter($string) {
+    private static function caseConverter($string)
+    {
         preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $string, $matches);
         return $matches[0];
     }
@@ -263,14 +280,15 @@ class Ops {
      *
      * @return bool
      */
-    static function isJSobj($val) {
-        if(is_numeric($val)) {
+    static function isJSobj($val)
+    {
+        if (is_numeric($val)) {
             return true;
         }
-        if(substr($val, 0, 1) == '{' && substr($val, -1) == '}') {
+        if (substr($val, 0, 1) == '{' && substr($val, -1) == '}') {
             return true;
         }
-        if(substr($val, 0, 1) == '[' && substr($val, -1) == ']') {
+        if (substr($val, 0, 1) == '[' && substr($val, -1) == ']') {
             return true;
         }
         return false;
@@ -281,7 +299,8 @@ class Ops {
      *
      * @return string
      */
-    private static function curlyBraces($input) {
+    private static function curlyBraces($input)
+    {
         return '{{' . $input . '}}';
     }
 
@@ -290,7 +309,8 @@ class Ops {
      *
      * @return string
      */
-    private static function hardBraces($input) {
+    private static function hardBraces($input)
+    {
         return '[[' . $input . ']]';
     }
 
@@ -299,7 +319,8 @@ class Ops {
      *
      * @return string
      */
-    private static function tBraces($input) {
+    private static function tBraces($input)
+    {
         return '<t>' . $input . '</t>';
     }
 }
