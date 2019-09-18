@@ -71,7 +71,7 @@ Output:
 Serializes strings, arrays and objects (url save).
 
 #### unserialize($serializedString)
-Serializes strings, arrays and objects.
+Reverts serialize()
 
 #### pin($length)
 Returns a random integer in the requested length.
