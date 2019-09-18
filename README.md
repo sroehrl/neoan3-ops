@@ -76,6 +76,17 @@ Serializes strings, arrays and objects.
 #### pin($length)
 Returns a random integer in the requested length.
 
+#### flattenArray($array)
+Converts deep arrays to keyed arrays of one level to resemble JS-object selection.
+```PHP
+$original = ['items' => ['name' => 'sam']];
+$flat = Ops::flattenArray($original)
+/*
+* output $flat: ['items.name' => 'sam'];
+* 
+*/
+```
+
 #### hash($length = 10, $special = false)
 Returns a random string (with or without special characters) in the requested length.
 
@@ -90,16 +101,17 @@ Returns selected part of $array.
 ```PHP
 $userInput = [
     'id'=>1,
+    'name'=>'sam'
     'random'=>'value'
 ];
-$clean = Ops::extrude(['id'],$userInput);
-// Output $clean: ['id'=>1]
+$clean = Ops::extrude(['id','name'],$userInput);
+// Output $clean: ['id'=>1,'name'=>'sam']
 ```
 #### toPascalCase($string)
 Converts spaces, snake-, kebab- or camelCase to PascalCase
 #### toCamelCase($string)
 Converts spaces, snake-, kebab- or PascalCase to camelCase
-#### toSnakeCase
+#### toSnakeCase($string)
 Converts spaces, camel-, kebab- or PascalCase to snake_case
-#### toKebabCase
+#### toKebabCase($string)
 Converts spaces, camel-, snake- or PascalCase to kebab-case
