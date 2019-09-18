@@ -94,7 +94,7 @@ Returns a random string (with or without special characters) in the requested le
 Encrypts a string with a symmetric AES-256 algorithm. 
 
 #### decrypt($encrypted, $key)
-Encrypts a string with a symmetric AES-256 algorithm. 
+Decrypts a string with a symmetric AES-256 algorithm. 
 
 #### extrude($targets,$array)
 Returns selected part of $array.
