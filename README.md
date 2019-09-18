@@ -1,26 +1,31 @@
 # neoan3-ops
 
-Helper library for common tasks. Developed for [neoan3](https://github.com/sroehrl/neoan3), put perfectly usable as stand-alone.
+Ops provides valuable string helpers for everyday use ranging from simple templating to encryption & hash generation.
+
 
 This library facilitates 
 
-- templating
-- string-manipulation
+- [templating](#templating)
+- [string-manipulation](#string-manipulation)
 
 ## Templating
-**Ops** is not a template engine! It is meant to be used for final rendering and string operations. 
-However, **Ops** can render a template:
+**Ops** is not a full blown template engine! 
+With modern JavaScript solutions creating a dynamic approach, Ops focuses on the necessities of static rendering. 
 
 _profile.html_
 ```HTML
 <h1>{{user}}</h1>
 <p>{{profile.name}}</p>
+<n-template for="items as key => item"> 
+    <p>{{item}}-{{key}}</p>
+</n-template>
 
 ```
 _profile.php_
 ```PHP
 $dynamicContent = [
     'user' => 'Test',
+    'items' => ['one','two'],
     'profile' => [
         'name' => 'John Doe',
         ...
@@ -32,6 +37,8 @@ _output_
 ```HTML
 <h1>Test</h1>
 <p>John Doe</p>
+<p>one-0</p>
+<p>two-1</p>
 ```
 
 ### Main templating methods
@@ -61,6 +68,9 @@ Output:
 ## String manipulation
 
 #### serialize($any)
+Serializes strings, arrays and objects (url save).
+
+#### unserialize($serializedString)
 Serializes strings, arrays and objects.
 
 #### pin($length)

@@ -21,6 +21,15 @@ class Ops
     }
 
     /**
+     * @param $string
+     *
+     * @return mixed
+     */
+    static function deserialize($string){
+        return json_decode(base64_decode(urldecode($string)),true);
+    }
+
+    /**
      * @param $length
      *
      * @return string
@@ -169,6 +178,10 @@ class Ops
     static function embrace($content, $array)
     {
         $flatArray = self::flattenArray($array);
+        $templateFunctions = ['nFor'];
+        foreach($templateFunctions as $function){
+            $content = self::$function($content, $array);
+        }
         return str_replace(array_map('self::curlyBraces', array_keys($flatArray)), array_values($flatArray), $content);
     }
 
@@ -322,5 +335,37 @@ class Ops
     private static function tBraces($input)
     {
         return '<t>' . $input . '</t>';
+    }
+
+    /*
+     * template functions
+     * */
+
+
+    /**
+     * @param $content
+     * @param $array
+     *
+     * @return string|string[]|null
+     */
+    static private function nFor($content, $array){
+
+        $content = preg_replace_callback('/<n-template for="([^"]+)">(.*?)<\/n-template>/ms', function($hit) use ($array){
+            $callToAction = explode(' ',$hit[1]);
+            $string = '';
+            foreach($array[$callToAction[0]] as $key => $value){
+                $subArray = [];
+                if(isset($callToAction[4])){
+                    $subArray[$callToAction[2]] = $key;
+                    $subArray[$callToAction[4]] = $value;
+                } else {
+                    $subArray[$callToAction[2]] = $value;
+                }
+                $string .= self::embrace($hit[2],$subArray);
+            }
+            return $string;
+
+        }, $content);
+        return $content;
     }
 }
