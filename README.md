@@ -17,7 +17,7 @@ _profile.html_
 <h1>{{user}}</h1>
 <p>{{profile.name}}</p>
 <n-template for="items as key => item"> 
-    <p>{{item}}-{{key}}</p>
+    <p n-if="key > 0">{{item}}-{{key}}</p>
 </n-template>
 
 ```
@@ -37,7 +37,6 @@ _output_
 ```HTML
 <h1>Test</h1>
 <p>John Doe</p>
-<p>one-0</p>
 <p>two-1</p>
 ```
 
