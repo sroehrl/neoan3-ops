@@ -70,6 +70,14 @@ class OpsTest extends TestCase
         $this->assertSame('<div>a-b</div>',Ops::embrace($str,$sub));
     }
 
+    public function testConditional(){
+        $str = '<custom-ele n-if="testKey">out</custom-ele>';
+        $sub = ['testKey'=>false];
+        $this->assertEmpty(trim(Ops::embrace($str,$sub)));
+        $sub['testKey'] = true;
+        $this->assertStringContainsString('custom-ele',Ops::embrace($str,$sub));
+    }
+
     public function testComplexEmbrace(){
         $array = ['items'=> ['one','two'] ];
         $t = Ops::embraceFromFile('embraceComplex.html',$array);

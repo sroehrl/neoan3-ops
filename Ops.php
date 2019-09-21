@@ -178,7 +178,7 @@ class Ops
     static function embrace($content, $array)
     {
         $flatArray = self::flattenArray($array);
-        $templateFunctions = ['nFor'];
+        $templateFunctions = ['nFor', 'nIf'];
         foreach($templateFunctions as $function){
             $content = self::$function($content, $array);
         }
@@ -351,8 +351,11 @@ class Ops
     static private function nFor($content, $array){
 
         $content = preg_replace_callback('/<n-template for="([^"]+)">(.*?)<\/n-template>/ms', function($hit) use ($array){
-            $callToAction = explode(' ',$hit[1]);
+            $callToAction = explode(' ', $hit[1]);
             $string = '';
+            if(!isset($array[$callToAction[0]]) || empty($array[$callToAction[0]])){
+                return '';
+            }
             foreach($array[$callToAction[0]] as $key => $value){
                 $subArray = [];
                 if(isset($callToAction[4])){
@@ -367,5 +370,39 @@ class Ops
 
         }, $content);
         return $content;
+    }
+
+    /**
+     * @param $content
+     * @param $array
+     *
+     * @return string
+     */
+    static private function nIf($content, $array){
+        $doc = new \DOMDocument();
+        @$doc->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $xPath = new \DOMXPath($doc);
+        $hits = $xPath->query("//*[@n-if]");
+        if($hits->length <1){
+            return $content;
+        }
+
+        foreach ($hits as $hit){
+            $expression = $hit->getAttribute('n-if');
+            $bool = true;
+            foreach ($array as $key => $value){
+                if(strpos($expression,$key) !== false){
+                    $expression = str_replace($key, $array[$key], $expression);
+                    $bool = eval("return $expression;");
+                }
+            }
+
+            if(!$bool){
+                $hit->parentNode->removeChild($hit);
+            } else {
+                $hit->removeAttribute('n-if');
+            }
+        }
+        return $doc->saveHTML();
     }
 }
