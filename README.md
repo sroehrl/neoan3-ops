@@ -16,9 +16,7 @@ _profile.html_
 ```HTML
 <h1>{{user}}</h1>
 <p>{{profile.name}}</p>
-<n-template for="items as key => item"> 
-    <p n-if="key > 0">{{item}}-{{key}}</p>
-</n-template>
+<p n-for="items as key => item" n-if="key > 0">{{item}}-{{key}}</p>
 
 ```
 _profile.php_

@@ -164,10 +164,14 @@ class OpsTest extends TestCase
 
     }
 
-    public function testHash()
+    /**
+     */
+    public function testRandomString()
     {
-        $t = Ops::hash(12);
+        $t = Ops::randomString(12);
         $this->assertRegExp('/[a-z0-9]+/i',$t);
     }
+
+
 
 }
