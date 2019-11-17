@@ -79,8 +79,9 @@ class OpsTest extends TestCase
     }
 
     public function testComplexEmbrace(){
-        $array = ['items'=> ['one','two'] ];
+        $array = ['items'=> ['one','two'], 'sub' =>[1,2,3] ];
         $t = Ops::embraceFromFile('embraceComplex.html',$array);
+        $this->assertStringContainsString('<li>1</li><li>2</li>', $t);
         $this->assertIsString($t);
     }
 
