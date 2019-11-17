@@ -1,7 +1,16 @@
 <section>
     <h1>Outer shell</h1>
-    <div n-for="items as key => item" n-if="key > 0">
-        {{item}}:{{key}} <span n-for="sub as number">{{number}}</span>
+    <article>
+        <div n-for="items as key => item" >
+            <span>{{item}}:{{key}}</span>
+        </div>
+    </article>
+
+    <div>
+        <ul>
+            <li n-for="sub as number" n-if="number !== 3">{{number}}</li>
+        </ul>
     </div>
+
 </section>
 

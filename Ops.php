@@ -188,7 +188,7 @@ class Ops
         $flatArray = self::flattenArray($array);
         $templateFunctions = ['nFor', 'nIf'];
         foreach ($templateFunctions as $function) {
-            $content = self::$function($content, $array);
+            $content = self::enforceEmbraceInAttributes(self::$function($content, $array));
         }
         return str_replace(array_map('self::curlyBraces', array_keys($flatArray)), array_values($flatArray), $content);
     }
@@ -442,13 +442,24 @@ class Ops
      */
     private static function clone(\DOMDocument $parentDoc, \DOMElement $hitNode, string $stringContent){
         $newDD =  new \DOMDocument();
-        @$newDD->loadHTML($stringContent, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        foreach ($newDD->childNodes as $subNode){
-            $isNode = $parentDoc->importNode($subNode, true);
+        @$newDD->loadHTML('<root>' .$stringContent . '</root>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NOBLANKS);
+        foreach ($newDD->firstChild->childNodes as $subNode){
 
-            $hitNode->parentNode->appendChild($isNode);
+            if($subNode->hasChildNodes() > 0 && $subNode->childNodes->length>0){
+                $isNode = $parentDoc->importNode($subNode, true);
+                $hitNode->parentNode->appendChild($isNode);
+            }
         }
         $hitNode->parentNode->removeChild($hitNode);
+    }
+
+    /**
+     * @param $content
+     *
+     * @return string|string[]|null
+     */
+    private static function enforceEmbraceInAttributes($content){
+        return preg_replace('/%7D%7D/','}}', preg_replace('/%7B%7B/','{{', $content));
     }
 
     /**
@@ -466,10 +477,11 @@ class Ops
         if($domNode->hasChildNodes()){
 
             foreach ($domNode->childNodes as $node){
-                $string .= self::embrace($domNode->ownerDocument->saveHTML($node), $substitutionArray);
+                $string .= $domNode->ownerDocument->saveHTML($node);
             }
         }
-
-        return $string . '</'. $domNode->tagName .'>';
+        $string .= '</'. $domNode->tagName .'>';
+        $string = self::embrace($string, $substitutionArray);
+        return $string;
     }
 }
