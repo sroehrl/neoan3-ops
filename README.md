@@ -84,7 +84,7 @@ $flat = Ops::flattenArray($original)
 */
 ```
 
-#### hash($length = 10, $special = false)
+#### randomString($length = 10)
 Returns a random string (with or without special characters) in the requested length.
 
 #### encrypt($string, $key)
