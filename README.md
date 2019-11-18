@@ -1,5 +1,7 @@
 # neoan3-ops
 
+[![Build Status](https://travis-ci.com/sroehrl/neoan3-ops.svg?branch=master)](https://travis-ci.com/sroehrl/neoan3-ops)
+
 Ops provides valuable string helpers for everyday use ranging from simple templating to encryption & hash generation.
 
 
