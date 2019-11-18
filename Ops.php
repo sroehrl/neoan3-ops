@@ -148,7 +148,7 @@ class Ops
     {
         $return = [];
         foreach ($array as $key) {
-            if (isset($objArray[$key])) {
+            if (array_key_exists($key, $objArray)) {
                 $return[$key] = $objArray[$key];
             }
         }
