@@ -1,6 +1,7 @@
 # neoan3-ops
 
 [![Build Status](https://travis-ci.com/sroehrl/neoan3-ops.svg?branch=master)](https://travis-ci.com/sroehrl/neoan3-ops)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/73cacbc29aa1438b37fd/test_coverage)](https://codeclimate.com/github/sroehrl/neoan3-ops/test_coverage)
 
 Ops provides valuable string helpers for everyday use ranging from simple templating to encryption & hash generation.
 
