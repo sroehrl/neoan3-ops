@@ -371,7 +371,7 @@ class Ops
             // remove attribute
             $hit->removeAttribute('n-for');
             // while string
-            $template = self::nodeStringify($hit, $array);
+            $template = self::nodeStringify($hit);
 
             // clean
             foreach ($parts as $i=>$part){
@@ -464,11 +464,10 @@ class Ops
 
     /**
      * @param \DOMElement $domNode
-     * @param             $substitutionArray
      *
      * @return string
      */
-    private static function nodeStringify(\DOMElement $domNode, array $substitutionArray){
+    private static function nodeStringify(\DOMElement $domNode){
         $string = '<' . $domNode->tagName;
         foreach ($domNode->attributes as $attribute){
             $string .= ' ' .$attribute->name .'="' . $attribute->value .'"';
@@ -481,7 +480,6 @@ class Ops
             }
         }
         $string .= '</'. $domNode->tagName .'>';
-        $string = self::embrace($string, $substitutionArray);
         return $string;
     }
 }
