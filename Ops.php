@@ -459,7 +459,7 @@ class Ops
      * @return string|string[]|null
      */
     private static function enforceEmbraceInAttributes($content){
-        return preg_replace('/%7D%7D/','}}', preg_replace('/%7B%7B/','{{', $content));
+        return preg_replace('/="(.*)(%7B%7B)(.*)(%7D%7D)(.*)"/','="$1{{$3}}$5"', $content);
     }
 
     /**
