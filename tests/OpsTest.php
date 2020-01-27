@@ -93,6 +93,17 @@ class OpsTest extends TestCase
         $this->assertStringContainsString('<li>1</li><li>2</li>', $t);
         $this->assertIsString($t);
     }
+    public function testEmbraceTypes()
+    {
+        $array = ['string' => 'String', 'number' => 2, 'boolean' => true, 'falseExpression' => false];
+        $t = Ops::embraceFromFile('typeTest.html',$array);
+        $expectedResult = ['String', 'Boolean', 'yes'];
+        foreach ($expectedResult as $true){
+            $this->assertStringContainsString($true, $t);
+        }
+        // cross-check
+        $this->assertStringNotContainsString('no', $t);
+    }
 
     public function testEmbraceFromFile()
     {

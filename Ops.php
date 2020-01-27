@@ -421,7 +421,20 @@ class Ops
             $bool = true;
             foreach ($array as $key => $value) {
                 if (strpos($expression, $key) !== false) {
-                    $expression = str_replace($key, $array[$key], $expression);
+                    switch(gettype($array[$key])){
+                        case 'boolean':
+                            $expression = str_replace($key, $array[$key] ? 'true' : 'false', $expression);
+                            break;
+                        case 'NULL':
+                            $expression = str_replace($key, 'false', $expression);
+                            break;
+                        case 'string':
+                            $expression = str_replace($key, '"' . $array[$key] . '"', $expression);
+                            break;
+                        default:
+                            $expression = str_replace($key, $array[$key], $expression);
+                            break;
+                    }
                     $bool = eval("return $expression;");
                 }
             }
