@@ -1,7 +1,7 @@
 {
   "name": "neoan3-apps/ops",
   "description": "neoan3 common string operations helper class",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "autoload": {
     "psr-4": {

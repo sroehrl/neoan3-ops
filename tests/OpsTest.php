@@ -88,10 +88,17 @@ class OpsTest extends TestCase
 
     public function testComplexEmbrace()
     {
-        $array = ['items' => ['one', 'two'], 'sub' => [1, 2, 3]];
+        $array = ['items' => ['one', 'two'], 'sub' => [1, 2, 3], 'deeps' => ['one' => 1, 'two' => 2]];
         $t = Ops::embraceFromFile('embraceComplex.html', $array);
         $this->assertStringContainsString('<li>1</li><li>2</li>', $t);
         $this->assertIsString($t);
+    }
+    public function testNestedCondition()
+    {
+        $array = ['deeps' => [['number'=>1], ['number' =>2]]];
+        $t = Ops::embraceFromFile('nestedCondition.html', $array);
+        $this->assertStringContainsString('exists', $t);
+        $this->assertStringNotContainsString('not', $t);
     }
     public function testEmbraceTypes()
     {
