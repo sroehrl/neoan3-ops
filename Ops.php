@@ -419,6 +419,7 @@ class Ops
         foreach ($hits as $hit) {
             $expression = $hit->getAttribute('n-if');
             $bool = true;
+            $array = self::flattenArray($array);
             foreach ($array as $key => $value) {
                 if (strpos($expression, $key) !== false) {
                     switch(gettype($array[$key])){
