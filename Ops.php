@@ -66,31 +66,6 @@ class Ops
         return mb_substr(bin2hex(random_bytes($length)), 0, $length);
     }
 
-    /**
-     * @param int  $length
-     * @param bool $special
-     *
-     * @return string
-     */
-    static function hash($length = 10, $special = false)
-    {
-        trigger_error('Deprecated function called. Use random($length) instead', E_USER_NOTICE);
-        $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        if ($special) {
-            $chars .= ")(}{][";
-        }
-        srand((double)microtime() * 1000000);
-        $i = 0;
-        $pass = 'N';
-        while ($i < $length) {
-            $num = rand(0, strlen($chars) - 1);
-            $tmp = substr($chars, $num, 1);
-            $pass .= $tmp;
-            $i++;
-        }
-        return $pass;
-    }
-
 
     /**
      * @param $message
@@ -165,9 +140,6 @@ class Ops
         }
         return $return;
     }
-
-
-
 
 
     /**
