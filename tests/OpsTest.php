@@ -228,6 +228,20 @@ class OpsTest extends TestCase
         $this->assertRegExp('/[a-z0-9]+/i', $t);
     }
 
+    public function testIsJSobj()
+    {
+        $numeric = Ops::isJSobj('2');
+        $this->assertTrue($numeric);
+
+        $notObj = Ops::isJSobj('a');
+        $this->assertFalse($notObj);
+
+        $object = Ops::isJSobj('{some:"value"}');
+        $this->assertTrue($object);
+
+        $array = Ops::isJSobj("['one','two']");
+        $this->assertTrue($array);
+    }
 
 
 }
