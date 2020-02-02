@@ -3,6 +3,7 @@
 namespace Neoan3\Apps;
 
 
+use http\Exception;
 use PHPUnit\Framework\TestCase;
 
 class OpsTest extends TestCase
@@ -196,6 +197,19 @@ class OpsTest extends TestCase
         $key = 'Secret23';
         $decrypted = Ops::decrypt($encrypted, $key);
         $this->assertSame($decrypted, 'Hello');
+    }
+    /**
+     * @depends  testEncrypt
+     *
+     * @param $encrypted
+     *
+     * @throws \Exception
+     */
+    public function testFailedDecrypt($encrypted)
+    {
+        $this->expectException(\Exception::class);
+        $key = 'Secret21';
+        $t = Ops::decrypt($encrypted.'~', $key);
     }
 
     public function testFlattenArray()
