@@ -1,12 +1,12 @@
 env:
   global:
-    - CC_TEST_REPORTER_ID=f149937885e9b77dae5e2e1373a1a0e6ad6ded3f1caa04484385a6a54a748d40
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 
 
 language: php
 php:
   - '7.2'
+  - '7.4'
 
 before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
