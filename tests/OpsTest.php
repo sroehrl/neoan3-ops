@@ -215,7 +215,7 @@ class OpsTest extends TestCase
     public function testFlattenArray()
     {
         $testArray = ['one' => ['some' => 'value'], 'two' => ['item1', 'item2']];
-        $shouldBe = ['one.some' => 'value', 'two.0' => 'item1', 'two.1' => 'item2'];
+        $shouldBe = ['one'=> 'Array', 'one.length'=> 1, 'one.some' => 'value','two'=>'Array', 'two.length' => 2, 'two.0' => 'item1', 'two.1' => 'item2'];
         $this->assertSame($shouldBe, Ops::flattenArray($testArray));
 
     }
